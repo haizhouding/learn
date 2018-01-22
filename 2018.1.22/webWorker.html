@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>耗时操作——————</title>
+	</head>
+	<body>
+		<button>点击我</button>
+		<h1></h1>
+		<button>终止子线程</button>
+		
+		
+	</body>
+	<script>
+			// 用for循环模拟耗时操作
+			var btn = document.querySelectorAll('button');
+			var h1 = document.querySelector("h1");
+			// for (i = 0; i < 2000000000; i++) {
+				
+			// }
+			//  我们可以把遇到的耗时操作放到worker子线程中去执行
+			//  这样不会阻断主线程（代码）的运行
+			//  子线程做耗时操作，主线程更新UI；
+			var worker = new Worker("./worker1.js");
+			worker.onmessage = function (e) {
+				console.log(e.data);
+				h1.innerText = e.data;
+			}
+			btn[0].onclick = function () {
+				alert("哈哈");
+			}
+			btn[1].onclick = function () {
+				worker.terminate();
+			}
+			
+		</script>
+</html>
